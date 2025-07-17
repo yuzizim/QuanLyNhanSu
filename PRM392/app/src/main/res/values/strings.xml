@@ -1,0 +1,203 @@
+<resources>
+    <!-- App Text -->
+    <string name="app_name">WMS</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login">Login</string>
+    <string name="logging_in">Logging in…</string>
+    <string name="register">Register</string>
+    <string name="email">Email:</string>
+    <string name="phone">Phone:</string>
+    <string name="department">Phòng ban:</string>
+    <string name="role">Vai trò:</string>
+    <string name="home">Home</string>
+    <string name="info">THÔNG TIN CÁ NHÂN</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="or">OR</string>
+    <string name="don_t_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="google_login">Login with Google</string>
+    <string name="facebook_login">Login with Facebook</string>
+    <string name="create_account">Create Account</string>
+    <string name="register_subtitle">Please fill in your details to create an account</string>
+    <string name="full_name">Full Name</string>
+    <string name="user_name">User Name</string>
+    <string name="edit_user">Edit User</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="i_agree_to_the">I agree to the</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="request_password">Request Password Reset</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="new_password">New Password</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
+
+
+    <!-- Content Descriptions -->
+    <string name="top_wave_design">Top wave design</string>
+    <string name="app_logo">App logo</string>
+    <string name="top_design">Top design</string>
+    <string name="back_button">Back button</string>
+
+    <!-- Menu Items -->
+    <string name="action_logout">Logout</string>
+    <string name="main_menu">Main Menu</string>
+    <string name="avatar_text">Ảnh đại diện</string>
+
+    <!-- Error Messages -->
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_password">Password must be at least 6 characters long</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_empty_field">This field cannot be empty</string>
+    <string name="error_terms_not_accepted">Please accept the terms and conditions</string>
+    <string name="error_login_failed">Login failed. Please check your credentials.</string>
+    <string name="error_register_failed">Registration failed. Please try again.</string>
+    <string name="error_network">Network error. Please check your connection.</string>
+
+    <string name="admin_greeting">Chào Admin</string>
+    <string name="admin_role">Quản trị viên hệ thống</string>
+    <string name="admin_stats">📊 THỐNG KÊ TỔNG HỢP</string>
+    <string name="admin_total_employees">Tổng nhân viên</string>
+    <string name="admin_active_jobs">Công việc đang thực hiện</string>
+    <string name="admin_dept_count">Số phòng ban: </string>
+    <string name="admin_avg_performance">Hiệu suất TB: </string>
+    <string name="attendance_rate">Attendance Rate</string>
+    <string name="task_completion_rate">Task Completion</string>
+    <string name="admin_manage">👥 QUẢN LÝ</string>
+    <string name="admin_employees">NHÂN VIÊN</string>
+    <string name="admin_manage_dept">🏢 PHÒNG BAN</string>
+    <string name="admin_system">⚙️ HỆ THỐNG</string>
+    <string name="admin_tasks">CÔNG VIỆC</string>
+    <string name="admin_quick_actions">Tác vụ nhanh</string>
+    <string name="admin_check_in">Chấm công</string>
+    <string name="admin_notifications">Thông báo</string>
+    <string name="admin_reports">Báo cáo</string>
+    <string name="admin_settings">Cài đặt</string>
+    <string name="admin_profile">Hồ sơ</string>
+
+
+    <!-- Updated strings -->
+    <string-array name="user_roles">
+        <item>admin</item>
+        <item>employee</item>
+        <item>hr</item>
+        <item>dep_manager</item>
+    </string-array>
+    <string-array name="user_active_states">
+        <item>Active</item>
+        <item>Inactive</item>
+    </string-array>
+
+    <string name="hr_greeting">Chào HR Officer</string>
+    <string name="hr_role">Chuyên viên nhân sự</string>
+    <string name="hr_stats">📈 THỐNG KÊ NHÂN SỰ</string>
+    <string name="hr_new_employees">Nhân viên mới tháng này</string>
+    <string name="hr_leave_requests">Đơn nghỉ phép chờ:  </string>
+    <string name="hr_avg_kpi">KPI trung bình</string>
+    <string name="hr_attendance_rate">Chấm công đúng giờ: </string>
+    <string name="hr_pending_alert">Đơn nghỉ phép cần duyệt: </string>
+    <string name="hr_profile_update">Hồ sơ chờ cập nhật: </string>
+    <string name="hr_kpi_evaluate">Đánh giá KPI tháng này</string>
+    <string name="hr_employees">👤 NHÂN VIÊN</string>
+    <string name="hr_schedule">📅 LỊCH LÀM VIỆC</string>
+    <string name="hr_evaluation">📊 ĐÁNH GIÁ</string>
+    <string name="hr_attendance">⏰ CHẤM CÔNG</string>
+    <string name="hr_add_employee">Add Employee</string>
+    <string name="hr_manage_leaves">Manage Leaves</string>
+    <string name="hr_reports">HR Reports</string>
+
+    <string name="manager_greeting">Chào [Tên Quản Lý]</string>
+    <string name="manager_dept">[Tên Phòng Ban]</string>
+    <string name="manager_dept_stats">PHÒNG BAN: [TÊN PHÒNG BAN]</string>
+    <string name="manager_employees">Nhân viên</string>
+    <string name="manager_tasks">Công việc đang thực hiện: 12</string>
+    <string name="manager_performance">Hiệu suất phòng ban</string>
+    <string name="manager_completion">Hoàn thành tuần này: 8</string>
+    <string name="manager_team">TEAM</string>
+    <string name="manager_team_employees">Nhân viên PB</string>
+    <string name="manager_team_performance">Hiệu suất</string>
+    <string name="manager_team_evaluation">Đánh giá</string>
+    <string name="manager_tasks_assign">Giao việc</string>
+    <string name="manager_tasks_track">Theo dõi</string>
+    <string name="manager_tasks_update">Cập nhật</string>
+    <string name="manager_schedule">LỊCH LÀM VIỆC</string>
+    <string name="manager_shifts">Ca làm việc</string>
+    <string name="manager_leave_approval">Duyệt nghỉ</string>
+    <string name="manager_attendance">Chấm công</string>
+    <string name="manager_reports">BÁO CÁO</string>
+    <string name="manager_progress">Tiến độ</string>
+    <string name="manager_team_kpi">KPI team</string>
+
+    <string name="employee_greeting">Chào [Tên Nhân Viên]</string>
+    <string name="employee_role">[Chức vụ/Phòng ban]</string>
+    <string name="employee_tasks">MY TASKS TODAY</string>
+    <string name="employee_task_list">Danh sách công việc hôm nay</string>
+    <string name="employee_priority">Ưu tiên cao</string>
+    <string name="employee_deadline">Deadline gần</string>
+    <string name="employee_work">CÔNG VIỆC</string>
+    <string name="employee_tasks_today">Công việc hôm nay: 5</string>
+    <string name="employee_completion">Hoàn thành: 3/5</string>
+    <string name="employee_overdue">Quá hạn: 0</string>
+    <string name="employee_attendance">CHẤM CÔNG</string>
+    <string name="employee_check_in">Check-in</string>
+    <string name="employee_check_in_time">08:15 AM</string>
+    <string name="employee_check_out">[CHECK-OUT]</string>
+    <string name="employee_schedule">LỊCH LÀM VIỆC</string>
+    <string name="employee_today">Hôm nay</string>
+    <string name="employee_week">Tuần này</string>
+    <string name="employee_leave_request">Đăng ký nghỉ</string>
+    <string name="employee_performance">HIỆU SUẤT</string>
+    <string name="employee_kpi">KPI cá nhân</string>
+    <string name="employee_history">Lịch sử</string>
+    <string name="employee_goal">Mục tiêu</string>
+
+    <!-- Department strings -->
+    <string name="department_management">Department Management</string>
+    <string name="search_department_hint">Search by name or code</string>
+    <string name="total_departments">Total</string>
+    <string name="managed_departments">Managed</string>
+    <string name="no_departments_found">No departments found</string>
+    <string name="create_department">Create Department</string>
+    <string name="edit_department">Edit Department</string>
+    <string name="delete_department">Delete Department</string>
+    <string name="department_name">Department Name</string>
+    <string name="department_code">Department Code</string>
+    <string name="department_manager">Department Manager</string>
+
+
+    <!--    Tasks string -->
+    <string name="timeline">Timeline - Estimation</string>
+    <string name="task_assign">Assignment - Priority</string>
+    <string name="task_fill">Fill in the details below</string>
+    <string name="new_task">New Task</string>
+    <string name="create_task">Create Task</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="estimate_hour">Estimated Hours</string>
+    <string name="deadline">Deadline</string>
+    <string name="start_date">Start Date</string>
+    <string name="assignee">Assignee</string>
+    <string name="priority">Priority</string>
+    <string name="description">Description</string>
+    <string name="task_title">Task Title *</string>
+    <string name="basic_info">Basic Information</string>
+    <string name="update_task_info">Update Task Information</string>
+    <string name="status_progress">Status - Progress</string>
+    <string name="status">Status</string>
+    <string name="progress">Progress</string>
+    <string name="progress1">Progress: </string>
+    <string name="delete">Delete</string>
+    <string name="update_task">Update Task</string>
+    <string name="no_task">No tasks found</string>
+    <string name="mess_task">Start by creating your first task</string>
+
+
+    <!--    CLient id-->
+    <string name="default_web_client_id">418972666603-2ct0lv7q5qh7e7fd0sjp1vsktpqp7inp.apps.googleusercontent.com</string>
+</resources>

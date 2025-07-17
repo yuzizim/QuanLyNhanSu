@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Màu sắc chính của ứng dụng -->
+    <color name="primary">#3D5CFF</color>
+    <color name="primary_dark">#2942CC</color>
+    <color name="primary_light">#6D83FF</color>
+    <color name="primary_variant">#2DD4BF</color>
+    <color name="secondary">#FF6F61</color>
+    <color name="accent">#FF8A3D</color>
+    <color name="fb">#3b5998</color>
+    <color name="google">#d34836</color>
+
+    <!-- Màu sắc nền và văn bản -->
+    <color name="tertiaryColor">#3CB371</color>
+    <color name="backgroundLight">#F5F5F5</color>
+    <color name="background">#F8FAFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text_primary">#1D1D1D</color>
+    <color name="text_secondary">#646464</color>
+    <color name="text_hint">#9E9E9E</color>
+
+    <!-- Màu sắc khác -->
+    <color name="error">#CF6679</color>
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+    <color name="info">#03A9F4</color>
+    <color name="divider_color">#E0E0E0</color>
+    <color name="error_color">#F44336</color>
+    <color name="success_color">#4CAF50</color>
+    <color name="card_gradient_start">#F8FAFC</color>
+    <color name="card_gradient_end">#E2E8F0</color>
+
+    <!-- Màu sắc trạng thái -->
+    <color name="active">#4CAF50</color>
+    <color name="inactive">#9E9E9E</color>
+    <color name="on_leave">#FFC107</color>
+    <color name="terminated">#CF6679</color>
+
+    <!-- Màu ưu tiên công việc -->
+    <color name="priority_low">#4CAF50</color>
+    <color name="priority_medium">#FFC107</color>
+    <color name="priority_high">#FF8A3D</color>
+    <color name="priority_urgent">#CF6679</color>
+
+    <!-- Đen và trắng -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Gradient màu -->
+    <color name="gradient_start">#3D5CFF</color>
+    <color name="gradient_end">#6D83FF</color>
+
+    <!-- Colors for status indicators in UserAdapter.java -->
+    <color name="green_500">#10B981</color>
+
+    <!-- Slate Colors -->
+    <color name="slate_50">#F8FAFC</color>
+    <color name="slate_100">#F1F5F9</color>
+    <color name="slate_200">#E2E8F0</color>
+    <color name="slate_300">#CBD5E1</color>
+    <color name="slate_400">#94A3B8</color>
+    <color name="slate_500">#64748B</color>
+    <color name="slate_600">#475569</color>
+    <color name="slate_700">#334155</color>
+    <color name="slate_800">#1E293B</color>
+    <color name="slate_900">#0F172A</color>
+
+    <!-- Indigo Colors -->
+    <color name="indigo_50">#EEF2FF</color>
+    <color name="indigo_100">#E0E7FF</color>
+    <color name="indigo_200">#C7D2FE</color>
+    <color name="indigo_300">#A5B4FC</color>
+    <color name="indigo_400">#818CF8</color>
+    <color name="indigo_500">#6366F1</color>
+    <color name="indigo_600">#4F46E5</color>
+    <color name="indigo_700">#4338CA</color>
+    <color name="indigo_800">#3730A3</color>
+    <color name="indigo_900">#312E81</color>
+
+    <!-- Emerald Colors -->
+    <color name="emerald_50">#ECFDF5</color>
+    <color name="emerald_100">#D1FAE5</color>
+    <color name="emerald_200">#A7F3D0</color>
+    <color name="emerald_300">#6EE7B7</color>
+    <color name="emerald_400">#34D399</color>
+    <color name="emerald_500">#10B981</color>
+    <color name="emerald_600">#059669</color>
+    <color name="emerald_700">#047857</color>
+    <color name="emerald_800">#065F46</color>
+    <color name="emerald_900">#064E3B</color>
+
+    <!-- Red Colors -->
+    <color name="red_50">#FEF2F2</color>
+    <color name="red_100">#FEE2E2</color>
+    <color name="red_500">#EF4444</color>
+    <color name="red_600">#DC2626</color>
+
+    <!-- Amber Colors -->
+    <color name="amber_50">#FFFBEB</color>
+    <color name="amber_100">#FEF3C7</color>
+    <color name="amber_500">#F59E0B</color>
+    <color name="amber_600">#D97706</color>
+
+    <!-- Material 3 Color Scheme -->
+    <color name="seed">#6750A4</color>
+    <color name="md_theme_light_primary">#6750A4</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#EADDFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#21005D</color>
+    <color name="md_theme_light_secondary">#625B71</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#E8DEF8</color>
+    <color name="md_theme_light_onSecondaryContainer">#1D192B</color>
+    <color name="md_theme_light_tertiary">#7D5260</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#FFD8E4</color>
+    <color name="md_theme_light_onTertiaryContainer">#31111D</color>
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+    <color name="md_theme_light_background">#FFFBFE</color>
+    <color name="md_theme_light_onBackground">#1C1B1F</color>
+    <color name="md_theme_light_surface">#FFFBFE</color>
+    <color name="md_theme_light_onSurface">#1C1B1F</color>
+    <color name="md_theme_light_surfaceVariant">#E7E0EC</color>
+    <color name="md_theme_light_onSurfaceVariant">#49454F</color>
+    <color name="md_theme_light_outline">#79747E</color>
+    <color name="md_theme_light_outlineVariant">#CAC4D0</color>
+    <color name="surface_container_lowest">#FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="status_pending">#9E9E9E</color>
+    <color name="status_in_progress">#2196F3</color>
+    <color name="status_review">#FF9800</color>
+    <color name="status_completed">#4CAF50</color>
+    <color name="status_cancelled">#F44336</color>
+
+</resources>

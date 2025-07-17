@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/background" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@android:color/transparent" />
+            <path
+                android:fillColor="@color/primary"
+                android:pathData="M0,80 Q50,60 100,80 T200,80 T300,80 T400,80 V100 H0 Z" />
+        </shape>
+    </item>
+</layer-list>
