@@ -16,6 +16,7 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
+app.use('/api/dashboard', require('./routes/dashboardRoutes.js'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/employees', require('./routes/employeeRoutes'));
 app.use('/api/departments', require('./routes/departmentRoutes.js'));
