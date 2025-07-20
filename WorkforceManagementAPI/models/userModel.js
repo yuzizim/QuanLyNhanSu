@@ -1,4 +1,5 @@
 // models/userModel.js - User model and database operations
+const dotenv = require('dotenv');
 const db = require('../config/db.js');
 const bcrypt = require('bcryptjs');
 
@@ -40,7 +41,6 @@ class User {
                 params.push('dep_manager');
             }
 
-
             // Pagination
             const offset = (page - 1) * limit;
             query += ' LIMIT ? OFFSET ?';
@@ -52,8 +52,8 @@ class User {
             const [stats] = await db.execute(`
                 SELECT 
                     COUNT(*) as total_users,
-                    COUNT(CASE WHEN is_active = 'active' THEN 1 END) as active_users,
-                    COUNT(CASE WHEN is_active = 'inactive' THEN 1 END) as inactive_users,
+                    COUNT(CASE WHEN is_active = true THEN 1 END) as active_users,
+                    COUNT(CASE WHEN is_active = false THEN 1 END) as inactive_users,
                     COUNT(CASE WHEN created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) THEN 1 END) as new_users
                 FROM users
             `);
@@ -87,14 +87,13 @@ class User {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(userData.password, salt);
 
-            const result = await db.execute(
-                'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
-                [userData.username, userData.email, hashedPassword]
+            const [result] = await db.execute(
+                'INSERT INTO users (username, email, password_hash, role, is_active) VALUES (?, ?, ?, ?, ?)',
+                [userData.username, userData.email, hashedPassword, userData.role || 'employee', true]
             );
-            const insertId = Array.isArray(result[0]) ? result[0].insertId : result.insertId;
 
-            if (insertId) {
-                return this.findById(insertId);
+            if (result.insertId) {
+                return this.findById(result.insertId);
             }
             return null;
         } catch (error) {
@@ -116,9 +115,17 @@ class User {
     static async login(email, password) {
         try {
             const user = await this.findByEmail(email);
+            console.log('[login] user:', user);
             if (!user) return null;
 
+            // Defensive: If password_hash is missing, fail
+            if (!user.password_hash) {
+                console.error('[login] user.password_hash is missing');
+                return null;
+            }
+
             const isMatch = await bcrypt.compare(password, user.password_hash);
+            console.log('[login] isMatch:', isMatch);
             if (!isMatch) return null;
 
             return user;
@@ -184,13 +191,12 @@ class User {
 
     static async activate(id) {
         try {
-            const result = await db.execute(
+            const [result] = await db.execute(
                 'UPDATE users SET is_active = TRUE WHERE id = ?',
                 [id]
             );
-            const affectedRows = Array.isArray(result[0]) ? result[0].affectedRows : result.affectedRows;
 
-            if (affectedRows) {
+            if (result.affectedRows) {
                 return this.findById(id);
             }
             return null;
@@ -323,7 +329,9 @@ class User {
     static async findByEmail(email) {
         try {
             if (!email) return null;
+            console.log('[findByEmail] email:', email);
             const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
+            console.log('[findByEmail] result:', rows);
             return rows[0] || null;
         } catch (error) {
             console.error('Error in findByEmail:', error);

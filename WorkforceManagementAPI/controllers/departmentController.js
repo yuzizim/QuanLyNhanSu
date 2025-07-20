@@ -139,7 +139,7 @@
 
 // module.exports = exports;
 
-
+const dotenv = require('dotenv');
 const Department = require('../models/departmentModel');
 
 // Validation result

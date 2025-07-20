@@ -1,4 +1,5 @@
 // routes/userRoutes.js - User routes
+const dotenv = require('dotenv');
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');

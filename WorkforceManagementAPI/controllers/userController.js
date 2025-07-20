@@ -1,4 +1,5 @@
 // controllers/userController.js - User controller
+const dotenv = require('dotenv');
 const User = require('../models/userModel');
 const Employee = require('../models/employeeModel');
 const { generateToken } = require('../utils/jwt');

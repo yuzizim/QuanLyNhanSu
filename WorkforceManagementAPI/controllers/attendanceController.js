@@ -192,7 +192,7 @@
 //     }
 // };
 
-
+const dotenv = require('dotenv');
 const Attendance = require('../models/attendanceModel');
 const Employee = require('../models/employeeModel');
 const db = require('../config/db.js');

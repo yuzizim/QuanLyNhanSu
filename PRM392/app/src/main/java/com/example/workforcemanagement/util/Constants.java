@@ -3,7 +3,7 @@ package com.example.workforcemanagement.util;
 
 public class Constants {
     // API URLs
-    public static final String BASE_URL = "http://192.168.2.22:9999/";
+    public static final String BASE_URL = "http://10.0.2.2:9999/"; // For Android Emulator
     //public static final String BASE_URL = "http://192.168.1.94:9999/";
 
     //public static final String BASE_URL = "http://10.33.56.251:9999/";

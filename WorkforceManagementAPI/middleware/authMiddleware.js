@@ -48,7 +48,7 @@
 //     };
 // };
 
-
+const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const db = require('../config/db.js');
 const UserModel = require('../models/userModel');

@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId = "com.example.workforcemanagement"
         minSdk = 29
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
