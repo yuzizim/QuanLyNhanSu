@@ -135,5 +135,6 @@
     <color name="status_review">#FF9800</color>
     <color name="status_completed">#4CAF50</color>
     <color name="status_cancelled">#F44336</color>
+    <color name="blue_500">#03A9F4</color>
 
 </resources>

@@ -76,5 +76,13 @@ public class ManagerDashboardActivity extends AppCompatActivity {
             intent.putExtra("user", user);
             startActivity(intent);
         });
+
+        findViewById(R.id.cardTeam).setOnClickListener(v -> {
+            Intent intent = new Intent(this, com.example.workforcemanagement.ui.dep_manager.ActivityEmListDep.class);
+            if (department != null) {
+                intent.putExtra("department", department); // truyền phòng ban sang
+            }
+            startActivity(intent);
+        });
     }
 }
