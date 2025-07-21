@@ -116,7 +116,7 @@ CREATE TABLE `employees` (
 
 LOCK TABLES `employees` WRITE;
 /*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,2,'EMP002','John','Doe','john.doe@example.com','0987654321',1,'HR Specialist','2024-02-15','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(2,3,'EMP003','Jane','Smith','jane.smith@example.com','0369876543',2,'Frontend Developer','2024-03-01','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(3,4,'EMP004','Bob','Wilson','bob.wilson@example.com','0345678912',3,'Marketing employee','2024-04-20','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(4,5,'EMP005','Hai','Nguyen','hai@example.com','0911222333',NULL,'Department Manager','2024-05-01','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(5,6,'EMP006','HaiB','Le','haib@example.com','0911222444',NULL,'Department Manager','2024-05-02','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(6,7,'EMP007','HaiZ','Pham','haiz@example.com','0911222555',NULL,'Department Manager','2024-05-03','active','2025-07-20 11:20:50','2025-07-20 11:20:50');
+INSERT INTO `employees` VALUES (1,2,'EMP002','John','Doe','john.doe@example.com','0987654321',1,'HR Specialist','2024-02-15','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(2,3,'EMP003','Jane','Smith','jane.smith@example.com','0369876543',2,'Frontend Developer','2024-03-01','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(3,4,'EMP004','Bob','Wilson','bob.wilson@example.com','0345678912',3,'Marketing employee','2024-04-20','active','2025-07-20 11:20:50','2025-07-20 11:20:50'),(4,5,'EMP005','Hai','Nguyen','hai@example.com','0911222333',1,'Department Manager','2024-05-01','active','2025-07-20 11:20:50','2025-07-20 15:42:10'),(5,6,'EMP006','HaiB','Le','haib@example.com','0911222444',2,'Department Manager','2024-05-02','active','2025-07-20 11:20:50','2025-07-20 15:42:10'),(6,7,'EMP007','HaiZ','Pham','haiz@example.com','0911222555',3,'Department Manager','2024-05-03','active','2025-07-20 11:20:50','2025-07-20 15:41:06');
 /*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +296,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'phamchinh','phamchinh.11a1@gmail.com','Chinh123@','admin',1,'2025-07-20 11:20:50','2025-07-20 11:20:50',NULL,NULL),(2,'john_doe','john.doe@example.com','John123@','hr',1,'2025-07-20 11:20:50','2025-07-20 11:20:50',NULL,NULL),(3,'jane_smith','jane.smith@example.com','Jane123@','employee',1,'2025-07-20 11:20:50','2025-07-20 11:20:50',NULL,NULL),(4,'bob_wilson','bob.wilson@example.com','Bob123@','employee',1,'2025-07-20 11:20:50','2025-07-20 11:20:50',NULL,NULL),(5,'hai','quybuu123@gmail.com','123@hai','dep_manager',1,'2025-07-20 11:20:50','2025-07-20 11:20:50',NULL,NULL),(6,'haib','quybuu1235@gmail.com','1235@haib','dep_manager',1,'2025-07-20 11:20:50','2025-07-20 11:20:50',NULL,NULL),(7,'haiz','quybuu1234@gmail.com','1234@haiz','dep_manager',1,'2025-07-20 11:20:50','2025-07-20 11:20:50',NULL,NULL);
+INSERT INTO `users` VALUES (1,'phamchinh','phamchinh.11a1@gmail.com','$2b$10$fwHU1tSxNIl6wGioI9r7nenztlzUPn3ryl0TnlS0je6sgkrOBXZ.q','admin',1,'2025-07-20 11:20:50','2025-07-20 11:33:37',NULL,NULL),(2,'john_doe','john.doe@example.com','$2b$10$hB59iRWwBGb5pFY8YdqhueGJ2MeGkZFDuyLC90tsX2KhkfdwAKcEq','hr',1,'2025-07-20 11:20:50','2025-07-20 11:33:37',NULL,NULL),(3,'jane_smith','jane.smith@example.com','$2b$10$I4zZ57OgR8fVWhLB5Q3rWut4NrE7uof2CyGp7sI3DET1q7UyOSuBW','employee',1,'2025-07-20 11:20:50','2025-07-20 11:33:37',NULL,NULL),(4,'bob_wilson','bob.wilson@example.com','$2b$10$GOSzZgcJbupY1zVusDUx9O0I4TPx9lof2kPKhxqtWYtAbD3iXSoxW','employee',1,'2025-07-20 11:20:50','2025-07-20 11:33:37',NULL,NULL),(5,'hai','quybuu123@gmail.com','$2b$10$LAb77T6HSRxIZt5s4gQLK.ImXHkzGDREI4eHp9SBGX4A4VUof1vQi','dep_manager',1,'2025-07-20 11:20:50','2025-07-20 11:33:37',NULL,NULL),(6,'haib','quybuu1235@gmail.com','$2b$10$xc4vaxX.Pi5u8qsWyhmO9.FiSYB/nooU6MasQlnQF.ufgxm3trnBe','dep_manager',1,'2025-07-20 11:20:50','2025-07-20 11:33:37',NULL,NULL),(7,'haiz','quybuu1234@gmail.com','$2b$10$Mwzet99gEFJNOkoLsbQ1CuVwru16HqGRL31mwr1u5E3F.nfvwa6ye','dep_manager',1,'2025-07-20 11:20:50','2025-07-20 11:33:37',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -309,4 +309,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-20 18:22:24
+-- Dump completed on 2025-07-21 17:24:49

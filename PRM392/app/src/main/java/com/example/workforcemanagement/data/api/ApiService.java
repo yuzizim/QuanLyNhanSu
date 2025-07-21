@@ -50,7 +50,6 @@ public interface ApiService {
     @GET("api/stats/dashboard")
     Call<StatsResponse> getDashboardStats(@Header("Authorization") String token);
 
-
     @GET("api/users")
     Call<UsersResponse> getUsers(
             @Header("Authorization") String token,

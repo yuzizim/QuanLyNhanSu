@@ -12,6 +12,8 @@ exports.getDepManagerDashboard = async (req, res) => {
         const userId = req.user.id;
         const user = await User.findById(userId);
 
+        console.log('[dashboard] userId:', userId, ', user:', user);
+
         if (!user || user.role !== 'dep_manager') {
             return res.status(403).json({
                 success: false,
@@ -21,6 +23,8 @@ exports.getDepManagerDashboard = async (req, res) => {
 
         // Lấy thông tin employee từ user_id
         const employee = await Employee.findByUserId(userId);
+        console.log('[dashboard] employee:', employee);
+
         if (!employee) {
             return res.status(404).json({ success: false, message: 'Employee info not found.' });
         }
@@ -30,61 +34,31 @@ exports.getDepManagerDashboard = async (req, res) => {
         if (employee.department_id) {
             department = await Department.findById(employee.department_id);
         } else {
-            // Nếu manager chưa gán phòng ban, trả về rỗng
             department = null;
         }
+        console.log('[dashboard] department:', department);
 
         // Thống kê số lượng nhân viên thuộc phòng ban này
         let deptEmployees = [];
         let deptEmployeeCount = 0;
         if (department) {
-            deptEmployees = await Employee.getAll({
+            let allEmployeesData = await Employee.getAll({
                 page: 1,
                 limit: 1000,
-                search: '',
-                filter: '',
+                search: ''
+                // Không truyền filter nếu không dùng!
             });
-            deptEmployees = deptEmployees.employees.filter(e => e.department_id === department.id);
-            deptEmployeeCount = deptEmployees.length;
-        }
+            console.log('[dashboard] allEmployeesData:', allEmployeesData);
 
-        // Thống kê số lượng công việc đang thực hiện trong phòng ban
-        let deptTasks = [];
-        let deptTasksInProgress = 0;
-        let deptTasksCompletedThisWeek = 0;
-        if (department) {
-            deptTasks = await Task.getAll({
-                page: 1,
-                limit: 1000,
-                assignee_id: undefined,
-                search: '',
-            });
-            // Chỉ lấy task của nhân viên phòng ban
-            deptTasks = deptTasks.tasks.filter(task => {
-                return deptEmployees.some(emp => emp.id === task.assignee_id);
-            });
-            deptTasksInProgress = deptTasks.filter(task => ['pending', 'in_progress', 'review'].includes(task.status)).length;
-
-            // Số task hoàn thành tuần này
-            const startOfWeek = new Date();
-            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
-            deptTasksCompletedThisWeek = deptTasks.filter(task =>
-                task.status === 'completed' &&
-                new Date(task.updated_at) >= startOfWeek
-            ).length;
-        }
-
-        // Hiệu suất phòng ban: trung bình overall_score của các evaluation đã finalized
-        let deptPerformance = 0;
-        if (department) {
-            const [rows] = await require('../config/db').execute(
-                `SELECT AVG(ev.overall_score) AS avg_score
-                 FROM evaluations ev
-                 JOIN employees emp ON ev.employee_id = emp.id
-                 WHERE emp.department_id = ? AND ev.status = 'finalized'`,
-                [department.id]
+            // Ép kiểu để so sánh chắc chắn đúng (nếu department_id là null thì bỏ qua)
+            deptEmployees = allEmployeesData.employees.filter(e =>
+                e.department_id !== null &&
+                String(e.department_id) === String(department.id)
             );
-            deptPerformance = rows[0] && rows[0].avg_score ? Math.round(rows[0].avg_score) : 0;
+            deptEmployeeCount = deptEmployees.length;
+
+            console.log('Type of e.department_id:', typeof deptEmployees[0]?.department_id, 'Value:', deptEmployees[0]?.department_id);
+            console.log('Type of department.id:', typeof department.id, 'Value:', department.id);
         }
 
         // Chuẩn bị dữ liệu trả về
@@ -102,10 +76,8 @@ exports.getDepManagerDashboard = async (req, res) => {
             },
             stats: {
                 employee_count: deptEmployeeCount,
-                employee_total: deptEmployeeCount, // Nếu có tổng, sửa lại
-                dept_performance: deptPerformance,
-                tasks_in_progress: deptTasksInProgress,
-                tasks_completed_this_week: deptTasksCompletedThisWeek
+                employee_total: deptEmployeeCount // Nếu có tổng, sửa lại
+                // ...
             }
         });
     } catch (error) {

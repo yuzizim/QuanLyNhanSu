@@ -25,10 +25,7 @@
             android:background="@drawable/circle_background"
             android:contentDescription="@string/avatar_text"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_person"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            android:src="@drawable/ic_person" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -82,7 +79,6 @@
                 android:textSize="10sp" />
 
         </RelativeLayout>
-
     </LinearLayout>
 
     <!-- Main Content -->
@@ -98,7 +94,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Department Overview Card -->
+            <!-- Phòng ban Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,14 +110,14 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tvDeptTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📊 PHÒNG BAN: "
+                        android:text="📊 PHÒNG BAN: [TÊN PHÒNG BAN]"
                         android:textColor="#2196F3"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:layout_marginBottom="12dp"
-                        android:id="@+id/tvDeptTitle" />
+                        android:layout_marginBottom="12dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -146,20 +142,19 @@
                                 android:id="@+id/tvDeptEmployees"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0/0"
+                                android:text="15/20"
                                 android:textColor="#2196F3"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvDeptTaskInProgress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Công việc đang thực hiện: 0"
+                                android:text="Công việc đang thực hiện: 12"
                                 android:textColor="#757575"
                                 android:textSize="10sp"
-                                android:layout_marginTop="4dp"
-                                android:id="@+id/tvDeptTaskInProgress" />
-
+                                android:layout_marginTop="4dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -179,28 +174,169 @@
                                 android:id="@+id/tvDeptPerformance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0%"
+                                android:text="88%"
                                 android:textColor="#4CAF50"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvDeptCompletedThisWeek"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Hoàn thành tuần này: 0"
+                                android:text="Hoàn thành tuần này: 8"
                                 android:textColor="#757575"
                                 android:textSize="10sp"
-                                android:layout_marginTop="4dp"
-                                android:id="@+id/tvDeptCompletedThisWeek" />
-
+                                android:layout_marginTop="4dp" />
                         </LinearLayout>
-
                     </LinearLayout>
-
                 </LinearLayout>
-
             </androidx.cardview.widget.CardView>
-            <!-- ... (phần dưới giữ nguyên như cũ, không đổi) ... -->
+
+            <!-- TEAM Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="👥 TEAM"
+                        android:textColor="#2196F3"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Nhân viên PB"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Hiệu suất"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Đánh giá"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- CÔNG VIỆC Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📝 CÔNG VIỆC"
+                        android:textColor="#2196F3"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Giao việc"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Theo dõi"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Cập nhật"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- BÁO CÁO Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📈 BÁO CÁO"
+                        android:textColor="#2196F3"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Tiến độ"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="• Hiệu suất"
+                        android:textColor="#333333"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <include
+                    android:id="@+id/userFooter"
+                    layout="@layout/user_footer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

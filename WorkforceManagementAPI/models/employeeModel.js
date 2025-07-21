@@ -20,104 +20,84 @@ class Employee {
             throw new Error('Failed to create employee');
         }
     }
-    // // Get list of employees
-    // static async getAll() {
-    //     try {
-    //         const [rows] = await db.execute('SELECT * FROM employees');
-    //         return rows;
-    //     } catch (error) {
-    //         console.error('Error fetching employees:', error);
-    //         throw new Error('Failed to fetch employees');
-    //     }
-    // }
 
-    // // Find employee by ID
-    // static async findById(id) {
-    //     try {
-    //         const [rows] = await db.execute('SELECT * FROM employees WHERE id = ?', [id]);
-    //         return rows[0] || null;
-    //     } catch (error) {
-    //         console.error('Error finding employee by id:', error);
-    //         throw new Error('Failed to find employee');
-    //     }
-    // }
+    static async getAll({ page = 1, limit = 10, search = '', filter } = {}) {
+    try {
+        const offset = (page - 1) * limit;
+        let query = `
+            SELECT 
+                e.id, 
+                e.user_id, 
+                e.employee_code, 
+                e.first_name, 
+                e.last_name, 
+                e.email, 
+                e.phone, 
+                e.department_id, 
+                e.position, 
+                e.hire_date, 
+                e.status
+            FROM employees e
+            JOIN users u ON e.user_id = u.id
+            WHERE u.role IN ('employee', 'dep_manager', 'hr') 
+            AND e.status = 'active'
+            AND u.is_active = TRUE
+        `;
+        const values = [];
 
-    static async getAll({ page = 1, limit = 10, search = '', filter = '' }) {
-        try {
-            const offset = (page - 1) * limit;
-            let query = `
-                SELECT 
-                    e.id, 
-                    e.user_id, 
-                    e.employee_code, 
-                    e.first_name, 
-                    e.last_name, 
-                    e.email, 
-                    e.phone, 
-                    e.department_id, 
-                    e.position, 
-                    e.hire_date, 
-                    e.status
-                FROM employees e
-                JOIN users u ON e.user_id = u.id
-                WHERE u.role IN ('employee', 'dep_manager', 'hr') 
-                AND e.status = 'active'
-                AND u.is_active = TRUE
-            `;
-            const values = [];
-
-            // Add search condition
-            if (search) {
-                query += ` AND (e.first_name LIKE ? OR e.last_name LIKE ? OR e.employee_code LIKE ? OR e.email LIKE ?)`;
-                const searchTerm = `%${search}%`;
-                values.push(searchTerm, searchTerm, searchTerm, searchTerm);
-            }
-
-            // Add filter condition (e.g., by department_id or position)
-            if (filter) {
-                query += ` AND e.position = ?`;
-                values.push(filter);
-            }
-
-            // Add pagination
-            query += ` LIMIT ? OFFSET ?`;
-            values.push(parseInt(limit), parseInt(offset));
-
-            const [rows] = await db.execute(query, values);
-
-            // Get total count for pagination
-            let countQuery = `
-                SELECT COUNT(*) as total 
-                FROM employees e
-                JOIN users u ON e.user_id = u.id
-                WHERE u.role IN ('employee', 'dep_manager', 'hr') 
-                AND e.status = 'active'
-                AND u.is_active = TRUE
-            `;
-            const countValues = [];
-            if (search) {
-                countQuery += ` AND (e.first_name LIKE ? OR e.last_name LIKE ? OR e.employee_code LIKE ? OR e.email LIKE ?)`;
-                const searchTerm = `%${search}%`;
-                countValues.push(searchTerm, searchTerm, searchTerm, searchTerm);
-            }
-            if (filter) {
-                countQuery += ` AND e.position = ?`;
-                countValues.push(filter);
-            }
-
-            const [[{ total }]] = await db.execute(countQuery, countValues);
-
-            return {
-                employees: rows,
-                total,
-                page: parseInt(page),
-                limit: parseInt(limit)
-            };
-        } catch (error) {
-            throw new Error(`Error fetching employees: ${error.message}`);
+        if (search && search !== '') {
+            query += ` AND (e.first_name LIKE ? OR e.last_name LIKE ? OR e.employee_code LIKE ? OR e.email LIKE ?)`;
+            const searchTerm = `%${search}%`;
+            values.push(searchTerm, searchTerm, searchTerm, searchTerm);
         }
-    }
 
+        // Chỉ thêm filter nếu filter có giá trị thực sự
+        if (typeof filter !== 'undefined' && filter !== null && filter !== '') {
+            query += ` AND e.position = ?`;
+            values.push(filter);
+        }
+
+        query += ` LIMIT ? OFFSET ?`;
+        values.push(parseInt(limit), parseInt(offset));
+
+        // DEBUG: In ra số lượng biến truyền vào
+        // console.log('Query:', query);
+        // console.log('Values:', values);
+
+        const [rows] = await db.execute(query, values);
+
+        // Get total count for pagination
+        let countQuery = `
+            SELECT COUNT(*) as total 
+            FROM employees e
+            JOIN users u ON e.user_id = u.id
+            WHERE u.role IN ('employee', 'dep_manager', 'hr') 
+            AND e.status = 'active'
+            AND u.is_active = TRUE
+        `;
+        const countValues = [];
+        if (search && search !== '') {
+            countQuery += ` AND (e.first_name LIKE ? OR e.last_name LIKE ? OR e.employee_code LIKE ? OR e.email LIKE ?)`;
+            const searchTerm = `%${search}%`;
+            countValues.push(searchTerm, searchTerm, searchTerm, searchTerm);
+        }
+        if (typeof filter !== 'undefined' && filter !== null && filter !== '') {
+            countQuery += ` AND e.position = ?`;
+            countValues.push(filter);
+        }
+
+        const [[{ total }]] = await db.execute(countQuery, countValues);
+
+        return {
+            employees: rows,
+            total,
+            page: parseInt(page),
+            limit: parseInt(limit)
+        };
+    } catch (error) {
+        throw new Error(`Error fetching employees: ${error.message}`);
+    }
+}
 
     static async findById(id) {
         try {

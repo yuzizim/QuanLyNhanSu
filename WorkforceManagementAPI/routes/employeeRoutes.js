@@ -12,4 +12,5 @@ router.get('/:id', verifyToken, checkRole('admin', 'hr'), employeeController.get
 router.put('/:id', verifyToken, checkRole('admin', 'hr'), validateEmployeeData, employeeController.updateEmployee);
 router.delete('/:id', verifyToken, checkRole('admin', 'hr'), employeeController.deleteEmployee);
 
+
 module.exports = router;
