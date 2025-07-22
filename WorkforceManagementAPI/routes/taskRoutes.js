@@ -1,4 +1,3 @@
-// routes/taskRoutes.js
 const express = require('express');
 const router = express.Router();
 const { createTask, getAllTasks, getTaskById, updateTask, deleteTask, getTaskReport } = require('../controllers/taskController');

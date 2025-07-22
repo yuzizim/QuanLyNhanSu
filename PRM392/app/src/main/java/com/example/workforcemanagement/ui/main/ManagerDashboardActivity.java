@@ -12,6 +12,7 @@ import com.example.workforcemanagement.R;
 import com.example.workforcemanagement.data.model.Department;
 import com.example.workforcemanagement.data.model.ManagerDashboardStats;
 import com.example.workforcemanagement.data.model.User;
+import com.example.workforcemanagement.ui.dep_manager.ActivityConTrackingTask;
 import com.example.workforcemanagement.ui.profile.UserProfileActivity;
 
 public class ManagerDashboardActivity extends AppCompatActivity {
@@ -87,6 +88,10 @@ public class ManagerDashboardActivity extends AppCompatActivity {
             if (department != null) {
                 intent.putExtra("department", department); // truyền phòng ban sang
             }
+            startActivity(intent);
+        });
+        findViewById(R.id.cardTrackTask).setOnClickListener(v -> {
+            Intent intent = new Intent(this, ActivityConTrackingTask.class);
             startActivity(intent);
         });
     }

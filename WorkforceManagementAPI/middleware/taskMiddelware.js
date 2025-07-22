@@ -1,16 +1,3 @@
-//Joi là một thư viện JavaScript được sử dụng để xác thực dữ liệu (data validation) trong các ứng dụng Node.js. 
-//Nó cho phép bạn định nghĩa các schema (lược đồ) để kiểm tra tính hợp lệ của dữ liệu đầu vào, 
-//đảm bảo rằng dữ liệu tuân theo các quy tắc cụ thể trước khi xử lý. Joi rất phổ biến trong các ứng dụng Express 
-//để xác thực dữ liệu từ request (như body, query, params) trước khi gửi đến controller hoặc model.
-
-// Các đặc điểm chính của Joi:
-// Cú pháp rõ ràng: Dễ dàng định nghĩa các quy tắc xác thực bằng cách sử dụng các phương thức như 
-//.string(), .number(), .required(), .min(), .max(), v.v.
-// Hỗ trợ nhiều kiểu dữ liệu: Xác thực các kiểu dữ liệu như chuỗi, số, mảng, đối tượng, ngày tháng, v.v.
-// Tùy chỉnh thông báo lỗi: Có thể định nghĩa thông báo lỗi cụ thể cho từng quy tắc.
-// Xác thực phức tạp: Hỗ trợ các quy tắc phức tạp như kiểm tra điều kiện (when), tham chiếu đến các trường khác 
-//(ref), và các biểu thức chính quy.
-// Tích hợp dễ dàng: Thường được sử dụng làm middleware trong Express để kiểm tra dữ liệu trước khi xử lý.
 const Joi = require('joi');
 
 // Validation schema for creating a task

@@ -16,4 +16,5 @@
         <item>High</item>
         <item>Urgent</item>
     </string-array>
+    <string-array name="priority_filter_array">Filter</string-array>
 </resources>
