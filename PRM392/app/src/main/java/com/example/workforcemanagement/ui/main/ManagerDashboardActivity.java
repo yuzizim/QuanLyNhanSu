@@ -60,6 +60,7 @@ public class ManagerDashboardActivity extends AppCompatActivity {
 // ... giữ nguyên các phần khác
 
 // Set dữ liệu phòng ban
+        Log.d("DASHBOARD_STATS", "Stats: " + stats);
         if (stats != null) {
             Log.d("DASHBOARD_STATS", "Active: " + stats.getEmployeeCount() + ", Total: " + stats.getEmployeeTotal());
             tvDeptEmployees.setText(stats.getEmployeeCount() + "/" + stats.getEmployeeTotal());

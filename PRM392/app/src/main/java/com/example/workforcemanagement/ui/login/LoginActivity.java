@@ -1,13 +1,9 @@
-//// LoginActivity.java
 package com.example.workforcemanagement.ui.login;
-
-import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -16,8 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.workforcemanagement.R;
-import com.example.workforcemanagement.data.model.Employee;
+import com.example.workforcemanagement.data.api.ApiClient;
+import com.example.workforcemanagement.data.api.ApiService;
+import com.example.workforcemanagement.data.model.Department;
 import com.example.workforcemanagement.data.model.LoginResponse;
+import com.example.workforcemanagement.data.model.ManagerDashboardResponse;
+import com.example.workforcemanagement.data.model.ManagerDashboardStats;
 import com.example.workforcemanagement.data.model.User;
 import com.example.workforcemanagement.databinding.ActivityLoginBinding;
 import com.example.workforcemanagement.ui.forgotpassword.ForgotPasswordActivity;
@@ -33,6 +33,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private LoginViewModel loginViewModel;
@@ -45,17 +49,14 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize ViewModel
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Initialize ActivityResultLauncher for Google Sign-In
         googleSignInLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -66,34 +67,24 @@ public class LoginActivity extends AppCompatActivity {
                             if (account != null) {
                                 String idToken = account.getIdToken();
                                 String email = account.getEmail();
-                                //Log.d("GoogleSignIn", "Email: " + email);
-                                //Log.d("GoogleSignIn", "ID Token: " + idToken);
                                 loginViewModel.googleLogin(idToken);
                             }
                         } catch (ApiException e) {
-                            //Log.e("GoogleSignIn", "ApiException: " + e.getMessage(), e);
                             Toast.makeText(this, "Google Sign-In failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             loginViewModel.setLoading(false);
                         }
                     } else {
-                        //Log.d("GoogleSignIn", "Sign-In cancelled or failed, resultCode: " + result.getResultCode());
                         Toast.makeText(this, "Google Sign-In cancelled", Toast.LENGTH_LONG).show();
                         loginViewModel.setLoading(false);
                     }
                 });
 
-        // Set up observers
         setupObservers();
-
-        // Set up click listeners
         setupClickListeners();
-
-        // Restore saved email and remember me state if applicable
         restoreSavedCredentials();
     }
 
     private void setupObservers() {
-        // Observe loading state
         loginViewModel.getIsLoading().observe(this, isLoading -> {
             if (isLoading) {
                 showLoading();
@@ -102,29 +93,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Observe Google login response
-//        loginViewModel.getGoogleLoginResponse().observe(this, response -> {
-//            loginViewModel.setLoading(false);
-//            if (response != null) {
-//                if (response.isSuccess()) {
-//                    handleSuccessfulLogin();
-//                } else {
-//                    Toast.makeText(this, response.getMessage() != null ? response.getMessage() : "Google login failed", Toast.LENGTH_LONG).show();
-//                }
-//            } else {
-//                Toast.makeText(this, "Network error, please try again", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
         loginViewModel.getGoogleLoginResponse().observe(this, response -> {
             loginViewModel.setLoading(false);
             if (response != null) {
                 Log.d("GoogleLogin", "Response: success=" + response.isSuccess() + ", message=" + response.getMessage());
                 if (response.isSuccess()) {
-                    //handleSuccessfulLogin();
                     handleSuccessfulLogin(response);
                 } else {
-                    // Display specific Toast for unregistered email
                     if (response.getMessage() != null && response.getMessage().contains("not registered")) {
                         Toast.makeText(this, "This email is not registered. Please sign up.", Toast.LENGTH_LONG).show();
                     } else {
@@ -136,22 +111,15 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Network error, please try again", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     private void setupClickListeners() {
-        // Login button click listener
         binding.btnLogin.setOnClickListener(v -> attemptLogin());
-
-        // Forgot password click listener
         binding.tvForgotPassword.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
-
-        // Google login click listener
         binding.cvGoogleLogin.setOnClickListener(v -> signInWithGoogle());
-
         binding.cvFacebookLogin.setOnClickListener(v -> {
             Toast.makeText(this, "Facebook login feature coming soon", Toast.LENGTH_SHORT).show();
         });
@@ -166,44 +134,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        // Get input values
         String email = binding.etEmail.getText().toString().trim();
         String password = binding.etPassword.getText().toString().trim();
         boolean rememberMe = binding.cbRememberMe.isChecked();
 
-        // Validate inputs
         if (!loginViewModel.validateInputs(email, password)) {
             showValidationErrors(email, password);
             return;
         }
 
-        // Clear previous errors
         binding.tilEmail.setError(null);
         binding.tilPassword.setError(null);
 
-        // Perform login
         loginViewModel.login(email, password, rememberMe).observe(this, response -> {
-            // Always reset loading state
             loginViewModel.setLoading(false);
-
             if (response != null) {
                 if (response.isSuccess()) {
-                    //handleSuccessfulLogin();
                     handleSuccessfulLogin(response);
                 } else {
-                    // Show specific error on email and password fields
                     binding.tilEmail.setError("Invalid email or password");
                     binding.tilPassword.setError("Invalid email or password");
                 }
             } else {
-                // Handle null response (e.g., network error)
                 Toast.makeText(this, "Network error, please try again", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void signInWithGoogle() {
-        Log.d("GoogleSignIn", "Starting Google Sign-In");
         googleSignInClient.signOut().addOnCompleteListener(this, task -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             googleSignInLauncher.launch(signInIntent);
@@ -228,56 +186,78 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-//    private void handleSuccessfulLogin() {
-//        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-//
-//        // Navigate to main activity
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//        finish();
-//    }
-
-    // Updated handleSuccessfulLogin method trong LoginActivity
+    // After login, call dashboard API if dep_manager. Otherwise, go to dashboard directly.
     private void handleSuccessfulLogin(LoginResponse response) {
         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
 
-        loginViewModel.getProfile().observe(this, profileResponse -> {
-            loginViewModel.setLoading(false);
-            Intent intent;
-            User user = profileResponse.getData();
+        User user = response.getData();
+        String token = response.getToken();
+        if (user != null && user.getRole() != null) {
+            Log.d("Profile", "Profile fetched: " + user.getUsername());
+            switch (user.getRole()) {
+                case "admin":
+                    startDashboard(AdminDashboardActivity.class, user);
+                    break;
+                case "hr":
+                    startDashboard(HRDashboardActivity.class, user);
+                    break;
+                case "dep_manager":
+                    fetchDepManagerDashboard(token);
+                    break;
+                case "employee":
+                    startDashboard(EmployeeDashboardActivity.class, user);
+                    break;
+                default:
+                    startDashboard(MainActivity.class, user);
+                    break;
+            }
+        } else {
+            Toast.makeText(this, "Failed to fetch profile after login", Toast.LENGTH_LONG).show();
+            startDashboard(MainActivity.class, null);
+        }
+    }
 
-            if (profileResponse.isSuccess() && user != null) {
-                Log.d("Profile", "Profile fetched: " + user.getUsername());
-                switch (user.getRole()) {
-                    case "admin":
-                        intent = new Intent(this, AdminDashboardActivity.class);
-                        break;
-                    case "hr":
-                        intent = new Intent(this, HRDashboardActivity.class);
-                        break;
-                    case "dep_manager":
-                        intent = new Intent(this, ManagerDashboardActivity.class);
-                        break;
-                    case "employee":
-                        intent = new Intent(this, EmployeeDashboardActivity.class);
-                        break;
-                    default:
-                        intent = new Intent(this, MainActivity.class);
-                        break;
+    // Call dashboard API for dep_manager to get user and stats, then start dashboard
+    private void fetchDepManagerDashboard(String token) {
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        Call<ManagerDashboardResponse> call = apiService.getDepManagerDashboard("Bearer " + token);
+        call.enqueue(new Callback<ManagerDashboardResponse>() {
+            @Override
+            public void onResponse(Call<ManagerDashboardResponse> call, Response<ManagerDashboardResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ManagerDashboardResponse dashboardResponse = response.body();
+                    User user = dashboardResponse.getUser();
+                    ManagerDashboardStats stats = dashboardResponse.getStats();
+                    Department department = (user != null) ? user.getDepartment() : null;
+
+                    Intent intent = new Intent(LoginActivity.this, ManagerDashboardActivity.class);
+                    intent.putExtra("user", user);
+                    intent.putExtra("managerStats", stats);
+                    intent.putExtra("department", department);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Failed to load manager dashboard!", Toast.LENGTH_LONG).show();
+                    startDashboard(MainActivity.class, null);
                 }
-                intent.putExtra("user", user);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, "Failed to fetch profile: " + profileResponse.getMessage(), Toast.LENGTH_LONG).show();
-                intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+            }
+
+            @Override
+            public void onFailure(Call<ManagerDashboardResponse> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                startDashboard(MainActivity.class, null);
             }
         });
+    }
+
+    // Start other dashboards: admin, hr, employee, main
+    private void startDashboard(Class<?> dashboardActivity, User user) {
+        Intent intent = new Intent(this, dashboardActivity);
+        if (user != null) intent.putExtra("user", user);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private void showLoading() {

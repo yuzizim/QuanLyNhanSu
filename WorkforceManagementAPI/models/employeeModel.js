@@ -21,7 +21,8 @@ class Employee {
         }
     }
 
-static async getAll({ page = 1, limit = 10, search = '', filter, department_id } = {}) {
+    // Get all active employees for a department (NO dep_manager)
+    static async getAll({ page = 1, limit = 10, search = '', filter, department_id } = {}) {
     try {
         const offset = (page - 1) * limit;
         let query = `
@@ -30,13 +31,12 @@ static async getAll({ page = 1, limit = 10, search = '', filter, department_id }
                 e.email, e.phone, e.department_id, e.position, e.hire_date, e.status
             FROM employees e
             JOIN users u ON e.user_id = u.id
-            WHERE u.role IN ('employee', 'dep_manager', 'hr')
+            WHERE u.role = 'employee'
             AND e.status = 'active'
             AND u.is_active = TRUE
         `;
         const values = [];
 
-        // Thêm điều kiện khi có giá trị thực
         if (department_id !== undefined && department_id !== null && department_id !== '') {
             query += ` AND e.department_id = ?`;
             values.push(department_id);
@@ -51,21 +51,21 @@ static async getAll({ page = 1, limit = 10, search = '', filter, department_id }
             values.push(filter);
         }
 
-        query += ` LIMIT ? OFFSET ?`;
-        values.push(Number(limit), Number(offset));
+        // LIMIT/OFFSET trực tiếp
+        query += ` LIMIT ${Number(limit)} OFFSET ${Number(offset)}`;
 
-        // LOG debug
+        // Debug log
         console.log('Final SQL:', query);
         console.log('Values:', values);
 
         const [rows] = await db.execute(query, values);
 
-        // Count query (nếu dùng)
+        // Count query
         let countQuery = `
             SELECT COUNT(*) as total 
             FROM employees e
             JOIN users u ON e.user_id = u.id
-            WHERE u.role IN ('employee', 'dep_manager', 'hr') 
+            WHERE u.role = 'employee'
             AND e.status = 'active'
             AND u.is_active = TRUE
         `;
@@ -84,7 +84,9 @@ static async getAll({ page = 1, limit = 10, search = '', filter, department_id }
             countValues.push(filter);
         }
 
-        const [[{ total }]] = await db.execute(countQuery, countValues);
+        const [countRows] = await db.execute(countQuery, countValues);
+        // FIX: kiểm tra nếu countRows có phần tử đầu tiên và thuộc tính total
+        const total = countRows && countRows[0] && typeof countRows[0].total !== 'undefined' ? countRows[0].total : 0;
 
         return {
             employees: rows,
@@ -95,7 +97,8 @@ static async getAll({ page = 1, limit = 10, search = '', filter, department_id }
     } catch (error) {
         throw new Error(`Error fetching employees: ${error.message}`);
     }
-}
+    }
+
     static async findById(id) {
         try {
             const query = `
@@ -111,7 +114,6 @@ static async getAll({ page = 1, limit = 10, search = '', filter, department_id }
         }
     }
 
-    // Find employee by user ID
     static async findByUserId(userId) {
         try {
             const [rows] = await db.execute('SELECT * FROM employees WHERE user_id = ?', [userId]);
@@ -178,7 +180,6 @@ static async getAll({ page = 1, limit = 10, search = '', filter, department_id }
         }
     }
 
-    // Delete employee
     static async delete(id) {
         try {
             const [result] = await db.execute('DELETE FROM employees WHERE id = ?', [id]);

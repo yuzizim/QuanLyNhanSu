@@ -35,8 +35,59 @@ exports.createEmployee = async (req, res) => {
     }
 };
 
-// Get all employees
-// Get all employees (with filter for dep_manager)
+
+exports.getAllEmployees = async (req, res) => {
+    try {
+        const { page, limit, search, filter } = req.query;
+        let employeesData;
+
+        if (req.user.role === 'dep_manager') {
+            let departmentId = req.user.department_id;
+            if (!departmentId) {
+                const managerEmployee = await require('../models/employeeModel').findByUserId(req.user.id);
+                departmentId = managerEmployee ? managerEmployee.department_id : null;
+            }
+            if (!departmentId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Department not found for this dep_manager'
+                });
+            }
+            employeesData = await require('../models/employeeModel').getAll({
+                page: parseInt(page) || 1,
+                limit: parseInt(limit) || 10,
+                search: search || '',
+                filter: filter || '',
+                department_id: departmentId
+            });
+        } else {
+            employeesData = await require('../models/employeeModel').getAll({
+                page: parseInt(page) || 1,
+                limit: parseInt(limit) || 10,
+                search: search || '',
+                filter: filter || ''
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                employees: employeesData.employees,
+                total: employeesData.total,
+                page: employeesData.page,
+                limit: employeesData.limit
+            },
+            message: 'Employees fetched successfully'
+        });
+    } catch (error) {
+        console.error('Error fetching employees:', error);
+        return res.status(500).json({
+            success: false,
+            message: error.message || 'Internal server error'
+        });
+    }
+};
+
 exports.getAllEmployees = async (req, res) => {
     try {
         const { page, limit, search, filter } = req.query;

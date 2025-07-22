@@ -8,6 +8,7 @@ import com.example.workforcemanagement.data.model.EmployeesResponse;
 import com.example.workforcemanagement.data.model.LoginRequest;
 import com.example.workforcemanagement.data.model.GoogleLoginRequest;
 import com.example.workforcemanagement.data.model.LoginResponse;
+import com.example.workforcemanagement.data.model.ManagerDashboardResponse;
 import com.example.workforcemanagement.data.model.RequestPasswordResetRequest;
 import com.example.workforcemanagement.data.model.ResetPasswordRequest;
 import com.example.workforcemanagement.data.model.StatsResponse;
@@ -34,6 +35,8 @@ import retrofit2.http.Query;
 public interface ApiService {
     @POST("api/users/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
+    @GET("/api/dashboard/dep_manager")
+    Call<ManagerDashboardResponse> getDepManagerDashboard(@Header("Authorization") String token);
 
     @POST("api/users/google")
     Call<LoginResponse> googleLogin(@Body GoogleLoginRequest googleLoginRequest);
