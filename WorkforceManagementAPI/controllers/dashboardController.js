@@ -6,13 +6,11 @@ const Task = require('../models/taskModel');
 const Evaluation = require('../models/evaluationModel');
 const Attendance = require('../models/attendanceModel');
 
+// controllers/dashboardController.js
 exports.getDepManagerDashboard = async (req, res) => {
     try {
-        // Lấy thông tin user đăng nhập
         const userId = req.user.id;
         const user = await User.findById(userId);
-
-        console.log('[dashboard] userId:', userId, ', user:', user);
 
         if (!user || user.role !== 'dep_manager') {
             return res.status(403).json({
@@ -23,8 +21,6 @@ exports.getDepManagerDashboard = async (req, res) => {
 
         // Lấy thông tin employee từ user_id
         const employee = await Employee.findByUserId(userId);
-        console.log('[dashboard] employee:', employee);
-
         if (!employee) {
             return res.status(404).json({ success: false, message: 'Employee info not found.' });
         }
@@ -33,35 +29,28 @@ exports.getDepManagerDashboard = async (req, res) => {
         let department = null;
         if (employee.department_id) {
             department = await Department.findById(employee.department_id);
-        } else {
-            department = null;
         }
-        console.log('[dashboard] department:', department);
 
-        // Thống kê số lượng nhân viên thuộc phòng ban này
-        let deptEmployees = [];
-        let deptEmployeeCount = 0;
+        // Lấy tổng số nhân viên thuộc phòng ban này (không lọc status)
+        let totalCount = 0;
+        let activeCount = 0;
         if (department) {
-            let allEmployeesData = await Employee.getAll({
-                page: 1,
-                limit: 1000,
-                search: ''
-                // Không truyền filter nếu không dùng!
-            });
-            console.log('[dashboard] allEmployeesData:', allEmployeesData);
-
-            // Ép kiểu để so sánh chắc chắn đúng (nếu department_id là null thì bỏ qua)
-            deptEmployees = allEmployeesData.employees.filter(e =>
-                e.department_id !== null &&
-                String(e.department_id) === String(department.id)
+            // Đếm tổng số nhân viên PB
+            const [allRows] = await require('../config/db').execute(
+                `SELECT COUNT(*) as total FROM employees WHERE department_id = ?`,
+                [department.id]
             );
-            deptEmployeeCount = deptEmployees.length;
+            totalCount = allRows[0]?.total || 0;
 
-            console.log('Type of e.department_id:', typeof deptEmployees[0]?.department_id, 'Value:', deptEmployees[0]?.department_id);
-            console.log('Type of department.id:', typeof department.id, 'Value:', department.id);
+            // Đếm nhân viên đang active
+            const [activeRows] = await require('../config/db').execute(
+                `SELECT COUNT(*) as active FROM employees WHERE department_id = ? AND status = 'active'`,
+                [department.id]
+            );
+            activeCount = activeRows[0]?.active || 0;
         }
 
-        // Chuẩn bị dữ liệu trả về
+        // Trả dữ liệu về cho frontend
         return res.json({
             success: true,
             user: {
@@ -75,9 +64,9 @@ exports.getDepManagerDashboard = async (req, res) => {
                     : null
             },
             stats: {
-                employee_count: deptEmployeeCount,
-                employee_total: deptEmployeeCount // Nếu có tổng, sửa lại
-                // ...
+                employee_count_active: activeCount,
+                employee_count_total: totalCount,
+                // ...phần khác giữ nguyên nếu cần
             }
         });
     } catch (error) {

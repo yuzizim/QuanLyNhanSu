@@ -5,6 +5,6 @@ const dashboardController = require('../controllers/dashboardController');
 const { authenticate } = require('../middleware/authMiddleware');
 
 // Route: GET /api/dashboard/dep-manager
-router.get('/dep-manager', authenticate, dashboardController.getDepManagerDashboard);
+router.get('/dep_manager', authenticate, dashboardController.getDepManagerDashboard);
 
 module.exports = router;

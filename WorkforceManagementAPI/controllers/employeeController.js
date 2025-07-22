@@ -36,15 +36,47 @@ exports.createEmployee = async (req, res) => {
 };
 
 // Get all employees
+// Get all employees (with filter for dep_manager)
 exports.getAllEmployees = async (req, res) => {
     try {
         const { page, limit, search, filter } = req.query;
-        const employeesData = await Employee.getAll({
-            page: parseInt(page) || 1,
-            limit: parseInt(limit) || 10,
-            search: search || '',
-            filter: filter || ''
-        });
+        let employeesData;
+
+        // Nếu là dep_manager thì chỉ lấy nhân viên thuộc phòng ban mình quản lý
+        if (req.user.role === 'dep_manager') {
+            // Lấy employee record để biết department_id của dep_manager
+            // Nếu đã gắn department_id vào req.user thì lấy luôn, nếu chưa thì phải truy vấn thêm
+            let departmentId = req.user.department_id;
+            // Nếu chưa có thì truy DB từ employeeModel
+            if (!departmentId) {
+                const Employee = require('../models/employeeModel');
+                const managerEmployee = await Employee.findByUserId(req.user.id);
+                departmentId = managerEmployee ? managerEmployee.department_id : null;
+            }
+            if (!departmentId) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Department not found for this dep_manager'
+                });
+            }
+            // Lấy danh sách nhân viên theo department_id
+            employeesData = await require('../models/employeeModel').getAll({
+                page: parseInt(page) || 1,
+                limit: parseInt(limit) || 10,
+                search: search || '',
+                filter: filter || '',
+                department_id: departmentId // <-- thêm tham số này vào model
+            });
+        } else {
+            // admin, hr: lấy tất cả
+            employeesData = await require('../models/employeeModel').getAll({
+                page: parseInt(page) || 1,
+                limit: parseInt(limit) || 10,
+                search: search || '',
+                filter: filter || ''
+            });
+        }
+
         return res.status(200).json({
             success: true,
             data: {

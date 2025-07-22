@@ -3,6 +3,7 @@ package com.example.workforcemanagement.ui.dep_manager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -17,6 +18,7 @@ import com.example.workforcemanagement.data.model.Department;
 import com.example.workforcemanagement.data.model.Employee;
 import com.example.workforcemanagement.data.model.EmployeesResponse;
 import com.example.workforcemanagement.ui.adapter.EmployeeAdapter;
+import com.example.workforcemanagement.util.TokenManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +70,25 @@ public class ActivityEmListDep extends AppCompatActivity {
     }
 
     private void loadEmployees(String search) {
-        // TODO: Truyền token thực tế khi đăng nhập
-        String token = "Bearer your_token_here";
+        TokenManager tokenManager = new TokenManager(this);
+        String token = tokenManager.getToken(); // chỉ là JWT thuần
+        Log.d("TOKEN_CHECK", "Token vừa lấy từ SharedPreferences: " + token);
+
+        if (token == null) {
+            Log.e("TOKEN_CHECK", "Token null, người dùng chưa đăng nhập hoặc đã bị xóa token!");
+            // TODO: Thông báo user đăng nhập lại
+            return;
+        }
+
+        String authHeader = "Bearer " + token;
+        Log.d("TOKEN_CHECK", "Header Authorization gửi lên: " + authHeader);
+
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        apiService.getEmployees(token, search, null, 1, 100)
+        apiService.getEmployees(authHeader, search, null, 1, 100)
                 .enqueue(new Callback<EmployeesResponse>() {
                     @Override
                     public void onResponse(Call<EmployeesResponse> call, Response<EmployeesResponse> response) {
+                        Log.d("TOKEN_CHECK", "Response code: " + response.code());
                         if (response.body() != null && response.body().isSuccess() && response.body().getData() != null) {
                             employeeList.clear();
                             if (response.body().getData().getEmployees() != null) {
@@ -82,12 +96,15 @@ public class ActivityEmListDep extends AppCompatActivity {
                                 employeeAdapter.setFullList(employeeList); // For search filter
                             }
                             employeeAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.e("TOKEN_CHECK", "API không trả về data (body null hoặc lỗi): " + (response.body() != null ? response.body().getMessage() : "body null"));
                         }
                     }
                     @Override
                     public void onFailure(Call<EmployeesResponse> call, Throwable t) {
-                        // TODO: Xử lý lỗi (thông báo cho user)
+                        Log.e("TOKEN_CHECK", "API call failed: " + t.getMessage());
                     }
                 });
     }
+
 }

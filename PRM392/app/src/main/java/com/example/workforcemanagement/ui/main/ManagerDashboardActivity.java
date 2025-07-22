@@ -2,6 +2,7 @@ package com.example.workforcemanagement.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,13 +57,16 @@ public class ManagerDashboardActivity extends AppCompatActivity {
         tvDeptTitle.setText("📊 PHÒNG BAN: " + deptName);
 
         // Set dữ liệu phòng ban
+// ... giữ nguyên các phần khác
+
+// Set dữ liệu phòng ban
         if (stats != null) {
+            Log.d("DASHBOARD_STATS", "Active: " + stats.getEmployeeCount() + ", Total: " + stats.getEmployeeTotal());
             tvDeptEmployees.setText(stats.getEmployeeCount() + "/" + stats.getEmployeeTotal());
             tvDeptPerformance.setText(stats.getDeptPerformance() + "%");
             tvDeptTaskInProgress.setText("Công việc đang thực hiện: " + stats.getTasksInProgress());
             tvDeptCompletedThisWeek.setText("Hoàn thành tuần này: " + stats.getTasksCompletedThisWeek());
         } else {
-            // Nếu không có dữ liệu thì để mặc định
             tvDeptEmployees.setText("0/0");
             tvDeptPerformance.setText("0%");
             tvDeptTaskInProgress.setText("Công việc đang thực hiện: 0");
