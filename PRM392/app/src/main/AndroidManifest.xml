@@ -16,11 +16,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.dep_manager.EditTrackingTask"
+            android:exported="false" />
+        <activity
+            android:name=".ui.dep_manager.DetailTrackingTask"
+            android:exported="false" />
+        <activity
+            android:name=".ui.dep_manager.CreateTrackingTask"
+            android:exported="false" />
+        <activity
             android:name=".ui.dep_manager.ActivityConTrackingTask"
             android:exported="false" />
         <activity
             android:name=".ui.dep_manager.ActivityEmListDep"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".ui.profile.AdminEditProfile"
             android:exported="false" />

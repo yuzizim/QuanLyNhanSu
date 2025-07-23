@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF6FAFB"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Chi tiết công việc"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="#222"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/tvTitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tiêu đề:"
+        android:textStyle="bold"
+        android:textColor="#333"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTaskTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Thiết kế trang chủ"
+        android:textColor="#222"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader"
+        app:layout_constraintStart_toEndOf="@id/tvTitleLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Mô tả -->
+    <TextView
+        android:id="@+id/tvDescLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mô tả:"
+        android:textStyle="bold"
+        android:textColor="#333"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/tvTaskDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Thiết kế landing page cho sản phẩm mới"
+        android:textColor="#222"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskTitle"
+        app:layout_constraintStart_toEndOf="@id/tvDescLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Người đảm nhiệm -->
+    <TextView
+        android:id="@+id/tvAssigneeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Người đảm nhiệm:"
+        android:textStyle="bold"
+        android:textColor="#333"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskDesc"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/tvAssignee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nguyễn Văn B"
+        android:textColor="#222"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskDesc"
+        app:layout_constraintStart_toEndOf="@id/tvAssigneeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Hạn công việc -->
+    <TextView
+        android:id="@+id/tvDeadlineLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hạn công việc:"
+        android:textStyle="bold"
+        android:textColor="#333"
+        app:layout_constraintTop_toBottomOf="@id/tvAssignee"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/tvDeadline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="25/07/2025"
+        android:textColor="#222"
+        app:layout_constraintTop_toBottomOf="@id/tvAssignee"
+        app:layout_constraintStart_toEndOf="@id/tvDeadlineLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Ưu tiên -->
+    <TextView
+        android:id="@+id/tvPriorityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ưu tiên:"
+        android:textStyle="bold"
+        android:textColor="#333"
+        app:layout_constraintTop_toBottomOf="@id/tvDeadline"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/tvPriority"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cao"
+        android:textColor="#D32F2F"
+        app:layout_constraintTop_toBottomOf="@id/tvDeadline"
+        app:layout_constraintStart_toEndOf="@id/tvPriorityLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Trạng thái -->
+    <TextView
+        android:id="@+id/tvStatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trạng thái:"
+        android:textStyle="bold"
+        android:textColor="#333"
+        app:layout_constraintTop_toBottomOf="@id/tvPriority"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Đang thực hiện"
+        android:textColor="#43B96B"
+        app:layout_constraintTop_toBottomOf="@id/tvPriority"
+        app:layout_constraintStart_toEndOf="@id/tvStatusLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Nút Đóng -->
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:text="Đóng"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:backgroundTint="#2196F3"
+        app:layout_constraintTop_toBottomOf="@id/tvStatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
