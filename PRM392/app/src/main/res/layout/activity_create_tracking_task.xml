@@ -55,15 +55,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
+    <!-- Ngày bắt đầu (start_date, không cho sửa) -->
+    <EditText
+        android:id="@+id/etStartDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Ngày bắt đầu"
+        android:enabled="false"
+        android:focusable="false"
+        android:inputType="date"
+        app:layout_constraintTop_toBottomOf="@id/spinnerAssignee"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
     <!-- Hạn công việc -->
     <EditText
         android:id="@+id/etDeadline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Chọn ngày..."
+        android:hint="Chọn ngày kết thúc..."
         android:focusable="false"
         android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@id/spinnerAssignee"
+        app:layout_constraintTop_toBottomOf="@id/etStartDate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"

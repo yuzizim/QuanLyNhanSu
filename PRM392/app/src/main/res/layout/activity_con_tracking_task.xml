@@ -95,6 +95,14 @@
             android:scrollbars="vertical" />
     </LinearLayout>
 
+    <!-- ProgressBar: Loading indicator, overlay center -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
     <!-- Footer -->
     <include
         layout="@layout/user_footer"

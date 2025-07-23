@@ -54,23 +54,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
+    <EditText
+        android:id="@+id/etStartDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Ngày bắt đầu"
+        android:inputType="date"
+        android:enabled="false"
+        android:focusable="false"
+        android:textColor="#888"
+        app:layout_constraintTop_toBottomOf="@id/spinnerAssignee"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
 
     <!-- Hạn công việc -->
+
+    <!-- Độ ưu tiên -->
+
     <EditText
         android:id="@+id/etDeadline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Chọn ngày..."
-        android:focusable="false"
-        android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@id/spinnerAssignee"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="76dp"
         android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-        android:drawableRight="@android:drawable/ic_menu_my_calendar"/>
+        android:drawableRight="@android:drawable/ic_menu_my_calendar"
+        android:focusable="false"
+        android:hint="Chọn ngày..."
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerAssignee" />
 
-    <!-- Độ ưu tiên -->
     <Spinner
         android:id="@+id/spinnerPriority"
         android:layout_width="0dp"

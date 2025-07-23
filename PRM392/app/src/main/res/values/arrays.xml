@@ -16,5 +16,13 @@
         <item>High</item>
         <item>Urgent</item>
     </string-array>
-    <string-array name="priority_filter_array">Filter</string-array>
+
+    <!-- Đúng cấu trúc cho Spinner mức độ ưu tiên -->
+    <string-array name="priority_filter_array">
+        <item>Tất cả</item>
+        <item>low</item>
+        <item>medium</item>
+        <item>high</item>
+        <item>urgent</item>
+    </string-array>
 </resources>

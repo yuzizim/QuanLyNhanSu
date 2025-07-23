@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,28 +32,29 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityConTrackingTask extends AppCompatActivity {
+    private static final int REQUEST_CREATE_TASK = 1001;
+    private static final int REQUEST_EDIT_TASK = 1002;
     private RecyclerView rvTaskList;
     private TaskAdapter taskAdapter;
     private List<Task> taskList = new ArrayList<>();
     private EditText etSearchTask;
     private Spinner spinnerPriority;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_con_tracking_task);
 
-        // Khởi tạo views
         rvTaskList = findViewById(R.id.rvTaskList);
         etSearchTask = findViewById(R.id.etSearchTask);
         spinnerPriority = findViewById(R.id.spinnerPriority);
+        progressBar = findViewById(R.id.progressBar);
 
-        // Thiết lập RecyclerView
         rvTaskList.setLayoutManager(new LinearLayoutManager(this));
         taskAdapter = new TaskAdapter(taskList);
         rvTaskList.setAdapter(taskAdapter);
 
-        // Gán callback cho adapter
         taskAdapter.setTaskActionListener(new TaskAdapter.TaskActionListener() {
             @Override
             public void onView(Task task) {
@@ -63,7 +67,7 @@ public class ActivityConTrackingTask extends AppCompatActivity {
             public void onEdit(Task task) {
                 Intent intent = new Intent(ActivityConTrackingTask.this, EditTrackingTask.class);
                 intent.putExtra("task", task);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_EDIT_TASK);
             }
 
             @Override
@@ -72,47 +76,62 @@ public class ActivityConTrackingTask extends AppCompatActivity {
             }
         });
 
-        // Tìm kiếm task
         etSearchTask.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                taskAdapter.filter(s.toString(), spinnerPriority.getSelectedItem().toString());
+                String search = s.toString();
+                String priority = getPriorityForAPI();
+                loadTasks(search, priority);
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Lọc theo ưu tiên
         spinnerPriority.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
-                taskAdapter.filter(etSearchTask.getText().toString(), spinnerPriority.getSelectedItem().toString());
+                String search = etSearchTask.getText().toString();
+                String priority = getPriorityForAPI();
+                loadTasks(search, priority);
             }
-
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> parent) {}
         });
 
-        // Nút thêm task
         ImageView btnAddTask = findViewById(R.id.btnAddTask);
         btnAddTask.setOnClickListener(v -> {
             Intent intent = new Intent(this, CreateTrackingTask.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CREATE_TASK);
         });
 
-        // Nút quay lại
         ImageView btnBack = findViewById(R.id.btnBackTracking);
         btnBack.setOnClickListener(v -> finish());
 
-        // Load dữ liệu từ backend
         loadTasks("", "");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == REQUEST_CREATE_TASK || requestCode == REQUEST_EDIT_TASK) && resultCode == RESULT_OK) {
+            loadTasks("", "");
+        }
+    }
+
+    // Đã fix: check null cho spinnerPriority và getSelectedItem
+    private String getPriorityForAPI() {
+        if (spinnerPriority == null) return "";
+        Object selected = spinnerPriority.getSelectedItem();
+        if (selected == null) return "";
+        String priority = selected.toString();
+        if (priority.equalsIgnoreCase("Tất cả") || priority.equalsIgnoreCase("All")) {
+            return "";
+        }
+        return priority.toLowerCase();
+    }
+
     private void loadTasks(String search, String priority) {
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
         TokenManager tokenManager = new TokenManager(this);
         String token = tokenManager.getToken();
         String authHeader = "Bearer " + token;
@@ -122,6 +141,7 @@ public class ActivityConTrackingTask extends AppCompatActivity {
                 .enqueue(new Callback<TasksResponse>() {
                     @Override
                     public void onResponse(Call<TasksResponse> call, Response<TasksResponse> response) {
+                        if (progressBar != null) progressBar.setVisibility(View.GONE);
                         if (response.body() != null && response.body().isSuccess() && response.body().getData() != null) {
                             taskList.clear();
                             if (response.body().getData().getTasks() != null) {
@@ -129,11 +149,17 @@ public class ActivityConTrackingTask extends AppCompatActivity {
                                 taskAdapter.setFullList(taskList);
                             }
                             taskAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(ActivityConTrackingTask.this, "Không có dữ liệu!", Toast.LENGTH_SHORT).show();
+                            taskList.clear();
+                            taskAdapter.setFullList(taskList);
+                            taskAdapter.notifyDataSetChanged();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<TasksResponse> call, Throwable t) {
+                        if (progressBar != null) progressBar.setVisibility(View.GONE);
                         Toast.makeText(ActivityConTrackingTask.this, "Lỗi mạng!", Toast.LENGTH_SHORT).show();
                     }
                 });

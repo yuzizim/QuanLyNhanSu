@@ -10,23 +10,23 @@ const checkEmployeeExistence = async (employeeId) => {
 // Create a new task
 exports.createTask = async (req, res) => {
     try {
-        const { assignee_id, creator_id } = req.body;
-        if (assignee_id) {
-            const assigneeExists = await checkEmployeeExistence(assignee_id);
-            if (!assigneeExists) {
-                return res.status(400).json({ success: false, message: 'Assignee not found' });
-            }
-        }
-        const newTask = await Task.create(req.body);
-        if (newTask) {
-            return res.status(201).json({ success: true, message: 'Task created successfully', task: newTask });
-        }
-        return res.status(400).json({ success: false, message: 'Task creation failed' });
+        // Lấy creator_id từ user đăng nhập
+        const creator_id = req.user.employee_id; // đảm bảo middleware auth đã đính kèm user vào req
+
+        // Gộp creator_id vào data gửi xuống model
+        const taskData = { ...req.body, creator_id };
+
+        const newTask = await Task.create(taskData);
+
+        return res.status(201).json({
+            success: true,
+            message: "Task created successfully",
+            task: newTask
+        });
     } catch (error) {
-        console.error('Error creating task:', error);
-        return res.status(500).json({ success: false, message: error.message || 'Internal server error' });
+        return res.status(500).json({ success: false, message: error.message });
     }
-};
+}
 
 // Get all tasks (with pagination/filter)
 // getAllTasks
@@ -65,6 +65,10 @@ exports.getTaskById = async (req, res) => {
 exports.updateTask = async (req, res) => {
     try {
         const { id } = req.params;
+
+        // Không cho phép sửa creator_id qua update
+        if ('creator_id' in req.body) delete req.body.creator_id;
+
         const { assignee_id } = req.body;
         if (assignee_id) {
             const assigneeExists = await checkEmployeeExistence(assignee_id);

@@ -20,26 +20,46 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     private List<Employee> fullList;
 
     public EmployeeAdapter(List<Employee> employeeList) {
-        this.employeeList = employeeList;
+        this.employeeList = new ArrayList<>(employeeList);
         this.fullList = new ArrayList<>(employeeList);
     }
 
-    public void setFullList(List<Employee> list) {
-        fullList = new ArrayList<>(list);
+    // Method để cập nhật danh sách nhân viên từ API
+    public void updateEmployeeList(List<Employee> newList) {
+        this.employeeList.clear();
+        this.fullList.clear();
+
+        this.employeeList.addAll(newList);
+        this.fullList.addAll(newList);
+
+        notifyDataSetChanged();
     }
 
-    // Tìm kiếm
+    // Method để set lại fullList (giữ lại để tương thích)
+    public void setFullList(List<Employee> list) {
+        fullList.clear();
+        fullList.addAll(list);
+    }
+
+    // Tìm kiếm trong danh sách hiện có
     public void filter(String query) {
         employeeList.clear();
-        if (query.isEmpty()) {
+
+        if (query == null || query.trim().isEmpty()) {
+            // Nếu không có từ khóa search, hiển thị tất cả
             employeeList.addAll(fullList);
         } else {
+            String lowerCaseQuery = query.toLowerCase().trim();
+
+            // Tìm kiếm theo tên nhân viên
             for (Employee emp : fullList) {
-                if (emp.getFullName().toLowerCase().contains(query.toLowerCase())) {
+                if (emp.getFullName() != null &&
+                        emp.getFullName().toLowerCase().contains(lowerCaseQuery)) {
                     employeeList.add(emp);
                 }
             }
         }
+
         notifyDataSetChanged();
     }
 
@@ -53,12 +73,25 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @Override
     public void onBindViewHolder(@NonNull EmployeeViewHolder holder, int position) {
         Employee employee = employeeList.get(position);
-        holder.tvEmployeeName.setText(employee.getFullName());
+
+        // Set tên nhân viên
+        holder.tvEmployeeName.setText(employee.getFullName() != null ? employee.getFullName() : "Chưa cập nhật");
+
+        // Set chức vụ
         holder.tvEmployeePosition.setText(employee.getPosition() != null ? employee.getPosition() : "Chưa cập nhật");
-        holder.tvEmployeePerformance.setText("Hiệu suất: " + (employee.getStatus() != null && employee.getStatus().equals("active") ? "85%" : "0%"));
-        // Avatar và trạng thái: có thể set hình động, trạng thái tùy theo mẫu (fix cứng hoặc lấy từ dữ liệu)
+
+        // Set hiệu suất (có thể tùy chỉnh logic này)
+        String performanceText = "Hiệu suất: ";
+        if (employee.getStatus() != null && employee.getStatus().equals("active")) {
+            performanceText += "85%";
+        } else {
+            performanceText += "0%";
+        }
+        holder.tvEmployeePerformance.setText(performanceText);
+
+        // Set avatar và status icon (có thể tùy chỉnh)
         // holder.ivEmployeeAvatar.setImageResource(R.drawable.ic_person);
-        holder.ivEmployeeStatus.setImageResource(R.drawable.ic_task_done); // hoặc đổi icon theo status
+        holder.ivEmployeeStatus.setImageResource(R.drawable.ic_task_done);
     }
 
     @Override
